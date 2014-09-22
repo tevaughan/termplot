@@ -29,13 +29,13 @@ class TermplotCmdline
       defaults.left   = 0.0     # Coordinate of left side of plot.
       defaults.right  = 1.0     # Coordinate of right side of plot.
       defaults.expr   = "x**2"  # Expression to plot.
-      if (cols = ENV['COLUMNS']) == nil || (iCols = cols.to_i) < 3
+      if (iCols = `tput cols`.to_i) < 3
          defaults.cols = 79
       else
          defaults.cols = iCols - 1
       end
-      if (rows = ENV['LINES']) == nil || (iRows = rows.to_i) < 3
-         defaults.rows = 23
+      if (iRows = `tput lines`.to_i) < 3
+         defaults.rows = 22
       else
          defaults.rows = iRows - 1
       end

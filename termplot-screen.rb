@@ -30,6 +30,7 @@ class TermplotScreen
          (0..(@numCols - 1)).each do |cc|
             printf("%s", @lines[cc][rr])
          end
+         printf("\n")
       end
    end
 end
