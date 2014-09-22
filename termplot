@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require_relative "termplot-cmdline"
+
+# Extract options from the command line.
+options = TermplotCmdline.parse(ARGV)
+
+numSteps = options.cols - 1                   # Number of steps.
+dx = (options.right - options.left)/numSteps  # Size of each step.
+
+# Take steps across x, and print at each step the coordinates of the
+# corresponding point given by the expression.
+(0..numSteps).each do |step|
+   x = options.left + step*dx
+   printf("%11.4E %11.4E\n", x, eval(options.expr))
+end
+
