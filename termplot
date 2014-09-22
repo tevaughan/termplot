@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require_relative "termplot-cmdline"
+require_relative "termplot-screen"
 
 # Extract options from the command line.
 options = TermplotCmdline.parse ARGV
@@ -20,8 +21,12 @@ yVal = []                                     # y values.
    yVal[col] = y
 end
 
+screen = TermplotScreen.new(numCols: options.cols, numRows: options.rows)
 (0..numSteps).each do |col|
-   row = ((yVal[col] - yMin) / (yMax - yMin) * options.rows + 0.5).to_i
-   printf("%d %d\n", col, row)
+   row = ((yVal[col] - yMin) / (yMax - yMin) * (options.rows - 1) + 0.5).to_i
+   puts "#{col} #{row}"
+   screen.set(col: col, row: row)
 end
+
+screen.print
 
