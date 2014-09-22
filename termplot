@@ -3,15 +3,25 @@
 require_relative "termplot-cmdline"
 
 # Extract options from the command line.
-options = TermplotCmdline.parse(ARGV)
+options = TermplotCmdline.parse ARGV
 
-numSteps = options.cols - 1                   # Number of steps.
-dx = (options.right - options.left)/numSteps  # Size of each step.
+numSteps = options.cols - 1                   # Number of steps over x.
+dx = (options.right - options.left)/numSteps  # Size of each step over x.
+yMax = -1.0E+30                               # Maximum y value.
+yMin =  1.0E+30                               # Minimum y value.
+yVal = []                                     # y values.
 
-# Take steps across x, and print at each step the coordinates of the
-# corresponding point given by the expression.
-(0..numSteps).each do |step|
-   x = options.left + step*dx
-   printf("%11.4E %11.4E\n", x, eval(options.expr))
+# Take steps across x, and calculate y values.
+(0..numSteps).each do |col|
+   x = options.left + col*dx
+   y = eval(options.expr)
+   yMin = y if y < yMin
+   yMax = y if y > yMax
+   yVal[col] = y
+end
+
+(0..numSteps).each do |col|
+   row = ((yVal[col] - yMin) / (yMax - yMin) * options.rows + 0.5).to_i
+   printf("%d %d\n", col, row)
 end
 
